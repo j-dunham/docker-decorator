@@ -5,7 +5,10 @@ from docker_decorators import run_container
 
 
 @run_container(
-    "nginx", name="nginx-decorated", options={"detach": True, "ports": {80: 80}}
+    "nginx",
+    name="nginx-decorated",
+    remove_container=False,
+    options={"detach": True, "ports": {80: 80}},
 )
 def testing():
     print("Function -> Start")
