@@ -1,16 +1,17 @@
 import time
+
 import requests
 
-from docker_decorators import run_container
+from docker_decorators import with_container
 
 
-@run_container(
+@with_container(
     "nginx",
     name="nginx-decorated",
     remove_container=False,
     options={"detach": True, "ports": {80: 80}},
 )
-def testing():
+def important_function():
     print("Function -> Start")
     time.sleep(5)
     response = requests.get("http://localhost")
@@ -21,5 +22,5 @@ def testing():
 if __name__ == "__main__":
     print("Main -> start")
     time.sleep(3)
-    testing()
+    important_function()
     print("Main -> Done")

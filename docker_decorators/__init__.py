@@ -2,8 +2,8 @@ from typing import Optional
 
 import docker
 from docker.client import DockerClient
-from docker.models.containers import Container
 from docker.errors import NotFound
+from docker.models.containers import Container
 
 
 def get_existing_container(client: DockerClient, name: str) -> Optional[Container]:
@@ -15,7 +15,7 @@ def get_existing_container(client: DockerClient, name: str) -> Optional[Containe
         return None
 
 
-def run_container(image: str, name: str, options: dict, remove_container: bool = True):
+def with_container(image: str, name: str, options: dict, remove_container: bool = True):
     def wrapper(func):
         def decorated(*args, **kwargs):
             container = None
@@ -24,11 +24,7 @@ def run_container(image: str, name: str, options: dict, remove_container: bool =
                 container = get_existing_container(client, name)
                 # If no container is found create a new one, else start existing
                 if not container:
-                    container = client.containers.run(
-                        image,
-                        name=name,
-                        **options,
-                    )
+                    container = client.containers.run(image, name=name, **options)
                 else:
                     container.start()
                 result = func(*args, **kwargs)
